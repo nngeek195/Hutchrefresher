@@ -1,80 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Website</title>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="unnamed.ico" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hutch Refresh</title>
+
+  <!-- PWA manifest -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="unnamed.ico" />
+
+  <style>
+    /* Black and white professional style */
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      user-select: none;
+    }
+    header {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 1rem 0 0.5rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border-bottom: 2px solid #fff;
+      padding-bottom: 0.5rem;
+      width: 100%;
+      text-align: center;
+      background-color: #111;
+    }
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 480px;
+      padding: 1rem;
+      text-align: center;
+    }
+    button {
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 30px;
+      padding: 0.75rem 2.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(255,255,255,0.6);
+      transition: background 0.3s ease, color 0.3s ease;
+      user-select: none;
+      margin-top: 1rem;
+      width: 100%;
+      max-width: 300px;
+    }
+    button:hover {
+      background: #ddd;
+    }
+    p.info {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #ccc;
+      user-select: text;
+    }
+  </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-brand">
-                <i class="fas fa-code"></i>
-                <span>YourSite</span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#about"><i class="fas fa-user"></i> About</a></li>
-                <li><a href="#services"><i class="fas fa-cogs"></i> Services</a></li>
-                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+  <header>Hutch Refresh</header>
+  <main>
+    <p class="info">This page reloads <strong>hutch.lk</strong> every 5 seconds.<br>
+    Use the button below to start or stop auto-refresh.</p>
+    <button id="toggleRefreshBtn" aria-pressed="false" aria-label="Start auto refresh">Start Auto Refresh</button>
+  </main>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <section class="hero">
-            <div class="hero-content">
-                <h1><i class="fas fa-rocket"></i> Welcome to My Website</h1>
-                <p>Created and developed by <strong>[Your Name]</strong></p>
-                <button class="cta-button">
-                    <i class="fas fa-arrow-right"></i> Get Started
-                </button>
-            </div>
-        </section>
+  <script>
+    const REFRESH_INTERVAL_MS = 5000;
+    let refreshIntervalId = null;
+    const btn = document.getElementById('toggleRefreshBtn');
 
-        <!-- Feature Cards -->
-        <section class="features">
-            <div class="container">
-                <h2>Features</h2>
-                <div class="feature-grid">
-                    <div class="feature-card">
-                        <i class="fas fa-mobile-alt"></i>
-                        <h3>Responsive Design</h3>
-                        <p>Works on all devices</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-bolt"></i>
-                        <h3>Fast Performance</h3>
-                        <p>Lightning fast loading</p>
-                    </div>
-                    <div class="feature-card">
-                        <i class="fas fa-shield-alt"></i>
-                        <h3>Secure</h3>
-                        <p>Built with security in mind</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
+    function startAutoRefresh() {
+      if (refreshIntervalId) return;
+      btn.textContent = 'Stop Auto Refresh';
+      btn.setAttribute('aria-pressed', 'true');
+      refreshIntervalId = setInterval(() => {
+        // Reload the entire page to refresh hutch.lk
+        location.reload();
+      }, REFRESH_INTERVAL_MS);
+    }
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2024 Created by <strong>[Your Name]</strong>. All rights reserved.</p>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-github"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-            </div>
-        </div>
-    </footer>
+    function stopAutoRefresh() {
+      if (!refreshIntervalId) return;
+      clearInterval(refreshIntervalId);
+      refreshIntervalId = null;
+      btn.textContent = 'Start Auto Refresh';
+      btn.setAttribute('aria-pressed', 'false');
+    }
+
+    btn.addEventListener('click', () => {
+      if (refreshIntervalId) {
+        stopAutoRefresh();
+      } else {
+        startAutoRefresh();
+      }
+    });
+
+    // Optional: prompt user to install PWA
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.userChoice.then(choiceResult => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User  accepted the install prompt');
+        } else {
+          console.log('User  dismissed the install prompt');
+        }
+      });
+    });
+  </script>
+
+  <!-- Service Worker registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('Service Worker registered'))
+        .catch(err => console.error('Service Worker registration failed:', err));
+    }
+  </script>
 </body>
 </html>
